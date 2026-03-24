@@ -183,9 +183,15 @@
   <div class="event-col">
     <div class="event-card">
 
-      {% if event.image %}
-        <img src="{{ event.image.url }}" class="event-img" alt="{{ event.title }}">
-      {% endif %}
+     {% load static %}
+
+{% if event.title == 'Полугодовой отчетный концерт студии танца "Fresh"' %}
+    <img src="{% static 'images/events/FRESH_2026-01-05_19-43-49.jpg' %}" alt="{{ event.title }}">
+{% elif event.title == 'Концерт ко дню всех влюбленных' %}
+    <img src="{% static 'images/events/ФрешIMG_0317.JPG' %}" alt="{{ event.title }}">
+{% else %}
+    <img src="{% static 'images/logo.png' %}" alt="Нет афиши">
+{% endif %}
 
  <div class="content">
         <h5>{{ event.title }}</h5>
