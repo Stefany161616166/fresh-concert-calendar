@@ -7,12 +7,10 @@ SECRET_KEY = 'django-insecure-CHANGE-THIS-TO-YOUR-SECRET-KEY'
 DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
+
 CSRF_TRUSTED_ORIGINS = [
     "https://*.up.railway.app",
 ]
-
-
-#  APPS 
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -25,9 +23,6 @@ INSTALLED_APPS = [
     'events.apps.EventsConfig',
 ]
 
-
-#  MIDDLEWARE 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -39,22 +34,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-# URLS 
-
 ROOT_URLCONF = 'concert_calendar.urls'
-
-
-# TEMPLATES 
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],     # Глобальные шаблоны
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -63,13 +51,7 @@ TEMPLATES = [
     },
 ]
 
-
-#  WSGI 
-
 WSGI_APPLICATION = 'concert_calendar.wsgi.application'
-
-
-#  DATABASE 
 
 DATABASES = {
     'default': {
@@ -77,9 +59,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
-# PASSWORD VALIDATION 
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -96,19 +75,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-#  LANGUAGE & TIME 
-
 LANGUAGE_CODE = 'ru-ru'
-
 TIME_ZONE = 'Europe/Moscow'
-
 USE_I18N = True
 USE_TZ = True
 
-
-# STATIC FILES 
-
+# STATIC
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -126,13 +98,8 @@ STORAGES = {
     },
 }
 
-
-# MEDIA (картинки)
-
+# MEDIA
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-
-#  DEFAULT FIELD 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
