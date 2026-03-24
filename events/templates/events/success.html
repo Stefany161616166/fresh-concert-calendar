@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Бронирование успешно</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f7f7f7;
+}
+
+/* центрирование всего блока */
+.success-container{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+/* кнопка назад */
+.back-link{
+    position:absolute;
+    top:20px;
+    left:20px;
+    font-size:16px;
+    color:#0b0635;
+    text-decoration:none;
+}
+
+.back-link:hover{
+    text-decoration:underline;
+}
+
+/* заголовок */
+.success-title{
+    color:#e99211;
+    font-size:28px;
+}
+
+/* адрес */
+.address{
+    font-size:18px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+</style>
+
+</head>
+<body>
+
+<a href="{% url 'event_list' %}" class="back-link">
+← Вернуться к афише
+</a>
+
+<div class="success-container">
+
+<h2 class="success-title">
+🎉 Поздравляем! Ваше бронирование успешно!
+</h2>
+
+<p style="font-size:18px; margin-top:20px;">
+Для покупки и получения билета вы можете подойти по адресу:
+</p>
+
+<p class="address">
+г. Чебоксары, Проспект Мира 1к1<br>
+«ДК Агрегатный», центральный вход
+</p>
+
+</div>
+
+</body>
+</html>

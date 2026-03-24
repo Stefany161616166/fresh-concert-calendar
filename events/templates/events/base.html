@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Fresh{% endblock %}</title>
+
+  <style>
+    * { box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:#f7f7f7;
+      color:#111;
+      min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+    }
+
+    /* ШАПКА */
+    .navbar{
+      background:#ffffff;
+      box-shadow:0 3px 10px rgba(0,0,0,.08);
+      padding:14px 18px;
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+    .navbar-inner{
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .logo{
+      font-size:20px;
+      font-weight:800;
+      color:#ff7a1a;
+      text-decoration:none;
+      white-space:nowrap;
+    }
+    .nav-links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .nav-links a{
+      text-decoration:none;
+      font-weight:700;
+      color:#333;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:.2s;
+    }
+    .nav-links a:hover{
+      background:#fff1e7;
+      color:#ff7a1a;
+    }
+
+    /* КОНТЕНТ */
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      padding:18px;
+      width:100%;
+      flex: 1;
+    }
+
+
+    /* FOOTER */
+    .footer{
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+
+    color: white;
+    font-size: 14px;
+
+    background: rgba(0,0,0,0.4);
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+    /* АДАПТИВ */
+    @media (max-width: 700px){
+      .navbar-inner{ flex-direction:column; align-items:flex-start; }
+      .nav-links{ justify-content:flex-start; gap:10px; }
+      .container{ padding:14px; }
+    }
+    
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+  <div class="navbar">
+    <div class="navbar-inner">
+      <a class="logo" href="{% url 'home' %}">Fresh Studio</a>
+      <div class="nav-links">
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'event_list' %}">Афиша</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+  <div class="footer">
+    © 2026 Студия танца Fresh
+  </div>
+
+</body>
+</html>

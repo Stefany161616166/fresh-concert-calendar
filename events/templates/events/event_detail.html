@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ event.title }}</title>
+
+  <style>
+    /* БАЗА */
+    * { box-sizing: border-box; }
+    body{
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+    }
+
+    /* На всякий: любые картинки не ломают разметку */
+    img{ max-width: 100%; height: auto; display: block; }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 26px 16px 60px;
+    }
+
+    .back{
+      display: inline-block;
+      margin-bottom: 14px;
+      color: #dd7412;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .back:hover{ text-decoration: underline; }
+
+    .card{
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
+
+    h1{
+      margin: 0 0 14px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    .block{ margin-top: 16px; }
+    .label{ font-weight: 800; margin-bottom: 6px; }
+    .text{ margin: 0; }
+
+    /* СЕКЦИИ */
+    .section{ margin-top: 22px; }
+    .section-title{
+      font-weight: 900;
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    /* КАРТОЧКИ "КТО ВЫСТУПАЕТ" */
+    .who-grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .who-card{
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 16px;
+      overflow: hidden; /* КЛЮЧЕВО: ничего не вылезет */
+      box-shadow: 0 6px 14px rgba(0,0,0,.06);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .who-card:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(0,0,0,.10);
+    }
+
+    /* КЛЮЧЕВО: фиксируем высоту и ширину картинки в карточке */
+    .who-card img{
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .who-body{ padding: 12px 12px 14px; }
+    .who-title{
+      font-weight: 900;
+      font-size: 15px;
+      color: #111;
+    }
+    .who-sub{
+      margin-top: 4px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* ПРОГРАММА */
+    .program ul{
+      margin: 10px 0 0 18px;
+    }
+
+    /* КНОПКА */
+    .btn{
+      display: inline-block;
+      margin-top: 18px;
+      padding: 12px 18px;
+      background: #333;
+      color: #fff;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+    }
+    .btn:hover{ background: #000; }
+
+    /* АДАПТИВ */
+    @media (max-width: 980px){
+      .who-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      h1{ font-size: 30px; }
+    }
+    @media (max-width: 650px){
+      .who-grid{ grid-template-columns: 1fr; }
+      .card{ padding: 18px; }
+      h1{ font-size: 26px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <a class="back" href="{% url 'event_list' %}">← Назад к афише</a>
+
+    <div class="card">
+      <h1>{{ event.title }}</h1>
+
+      <div class="block">
+        <div class="label">Описание:</div>
+        <p class="text">{{ event.description }}</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Кто выступает</div>
+
+        <div class="who-grid">
+          <div class="who-card">
+            <img src="{% static 'images/detail/maria.jpg' %}" alt="Воспитанники Марии Тепеевой">
+            <div class="who-body">
+              <div class="who-title">Воспитанники Марии Тепеевой</div>
+              <div class="who-sub">•Современная хореография •Women dance •Фитнес •Hip-Hop</div>
+            </div>
+          </div>
+
+          <div class="who-card">
+            <img src="{% static 'images/detail/svetlana.jpg' %}" alt="Воспитанники Светланы">
+            <div class="who-body">
+              <div class="who-title">Воспитанники Светланы Григорьевой</div>
+              <div class="who-sub">•Street • Hip-Hop •Группы от 3-х лет</div>
+            </div>
+          </div>
+
+          <div class="who-card">
+            <img src="{% static 'images/detail/guests.jpg' %}" alt="Гости программы">
+            <div class="who-body">
+              <div class="who-title">Гости программы</div>
+              <div class="who-sub">Эксклюзивный номер-звезда Чувашской эстрады</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section program">
+        <div class="section-title">Концертная программа</div>
+        <ul>
+          <li>Открывашка</li>
+          <li>Блок 1</li>
+          <li>1. Фонарики</li>
+          <li>2. Women</li>
+          <li>Блок 2</li>
+          <li>3. Чебурашки</li>
+          <li>Финал</li>
+        </ul>
+      </div>
+
+      <a class="btn" href="{% url 'book_step_1' event.id %}">Забронировать билет</a>
+    </div>
+  </div>
+</body>
+</html>

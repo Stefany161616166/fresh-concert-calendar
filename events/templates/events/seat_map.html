@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Выбор места</title>
+
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f7f7; padding: 20px; }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+
+    .stage {
+      background: #fff;
+      border: 2px solid #333;
+      text-align: center;
+      padding: 14px 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+    }
+
+    /* Одна строка = левый блок / номер ряда / правый блок */
+    .hall-row {
+      display: grid;
+      grid-template-columns: 1fr 70px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .side { display: flex; gap: 6px; align-items: center; min-height: 30px; }
+    .side.left { justify-content: flex-end; }  /* левую сторону прижимаем к центру */
+    .side.right { justify-content: flex-start; }
+
+    .row-num {
+      width: 70px;
+      height: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 800;
+      color: #111;
+      text-align: center;
+    }
+
+    .seat {
+  width: 34px;
+  height: 28px;
+  background: #d9d9d9;
+  border: 1px solid #333;
+  border-radius: 6px 6px 3px 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  position: relative;
+  cursor: pointer;
+}
+
+/* ножки кресла */
+.seat::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  width: 18px;
+  height: 5px;
+  background: #333;
+  border-radius: 2px;
+}
+    .row-number{
+  width: 70px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 1;
+  color: #111;
+}
+.hall-row{
+  display: grid;
+  grid-template-columns: 1fr 70px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+.side.left{ justify-content: flex-end; }
+.side.right{ justify-content: flex-start; }
+
+
+    /* Свободно = серое, занято = красное */
+    .seat.free { background: #bdbdbd; cursor: pointer; }
+    .seat.busy { background: #e74c3c; cursor: not-allowed; opacity: .9; }
+
+    .seat.selected {
+  background-color: #4caf50 !important;
+  color: white;
+  transform: scale(1.15);
+}
+
+    .actions { margin-top: 18px; display: flex; gap: 12px; align-items: center; }
+    .btn {
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #333;
+      color: #fff;
+      font-weight: 700;
+    }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .error { background: #fff0f0; border: 1px solid #e74c3c; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
+    .hint { color: #555; }
+    .legend{
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  font-size: 14px;
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:4px 0;
+}
+
+.legend-seat{
+  width:20px;
+  height:20px;
+  border-radius:4px;
+}
+
+.legend-seat.free{
+  background:#dbdbdb;
+}
+
+.legend-seat.selected{
+  background:#4caf50;
+}
+
+.legend-seat.busy{
+  background:#e74c3c;
+}
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="stage">СЦЕНА</div>
+
+  {% if error %}
+    <div class="error">{{ error }}</div>
+  {% endif %}
+
+  <form method="post" id="seatForm">
+    {% csrf_token %}
+
+    <div id="selectedSeats"></div>
+
+    {% for r in rows %}
+  <div class="hall-row">
+
+    <!-- ЛЕВО -->
+    <div class="side left">
+      {% for seat in r.left|dictsortreversed:"number" %}
+        <div class="seat {% if seat.booked %}busy{% else %}free{% endif %}"
+             {% if not seat.booked %}
+             data-seat-id="{{ seat.id }}"
+             data-row="{{ r.num }}"
+             data-seat="{{ seat.number }}"
+             {% endif %}
+             title="Ряд {{ r.num }}, место {{ seat.number }}">
+          {{ seat.number }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- НОМЕР РЯДА -->
+    <div class="row-number">{{ r.num }}</div>
+
+    <!-- ПРАВО -->
+    <div class="side right">
+      {% for seat in r.right|dictsortreversed:"number" %}
+        <div class="seat {% if seat.booked %}busy{% else %}free{% endif %}"
+             {% if not seat.booked %}
+             data-seat-id="{{ seat.id }}"
+             data-row="{{ r.num }}"
+             data-seat="{{ seat.number }}"
+             {% endif %}
+             title="Ряд {{ r.num }}, место {{ seat.number }}">
+          {{ seat.number }}
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+{% endfor %}
+
+    <div class="actions">
+      <button class="btn" id="submitBtn" type="submit" disabled>Забронировать выбранное место</button>
+      <span class="hint" id="pickedInfo">Место не выбрано</span>
+    </div>
+    <div class="legend">
+    <div class="legend-item">
+        <div class="legend-seat free"></div>
+        <span>Свободно</span>
+    </div>
+
+    <div class="legend-item">
+        <div class="legend-seat selected"></div>
+        <span>Выбрано</span>
+    </div>
+
+    <div class="legend-item">
+        <div class="legend-seat busy"></div>
+        <span>Занято</span>
+    </div>
+</div>
+  </form>
+
+</div>
+
+<script>
+  const selectedWrap = document.getElementById('selectedSeats');
+  const submitBtn = document.getElementById('submitBtn');
+  const pickedInfo = document.getElementById('pickedInfo');
+
+  function addHidden(seatId) {
+    if (selectedWrap.querySelector(`input[value="${seatId}"]`)) return;
+    const inp = document.createElement('input');
+    inp.type = 'hidden';
+    inp.name = 'seats';
+    inp.value = seatId;
+    selectedWrap.appendChild(inp);
+  }
+
+  function removeHidden(seatId) {
+    const inp = selectedWrap.querySelector(`input[value="${seatId}"]`);
+    if (inp) inp.remove();
+  }
+
+  function updatePickedInfo() {
+    const selected = document.querySelectorAll('.seat.selected');
+
+    if (selected.length === 0) {
+      pickedInfo.textContent = 'Место не выбрано';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Забронировать';
+      return;
+    }
+
+    const seatsText = Array.from(selected).map(seat => {
+      return `Ряд ${seat.dataset.row}, место ${seat.dataset.seat}`;
+    });
+
+    pickedInfo.textContent = `Выбрано мест: ${selected.length} (${seatsText.join('; ')})`;
+    submitBtn.disabled = false;
+    submitBtn.textContent = `Забронировать (${selected.length})`;
+  }
+
+  document.querySelectorAll('.seat.free[data-seat-id]').forEach(seatEl => {
+    seatEl.addEventListener('click', () => {
+      const seatId = seatEl.dataset.seatId;
+
+      if (seatEl.classList.contains('selected')) {
+        seatEl.classList.remove('selected');
+        removeHidden(seatId);
+      } else {
+        seatEl.classList.add('selected');
+        addHidden(seatId);
+      }
+
+      updatePickedInfo();
+    });
+  });
+
+  // при загрузке
+  updatePickedInfo();
+</script>
+
+
+
+</body>
+</html>

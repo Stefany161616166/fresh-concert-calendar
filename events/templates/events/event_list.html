@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <a href="{% url 'home' %}" class="back-home">← На главную</a>
+    <title>Афиша концертов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: #f8f4ef;
+        }
+        h1 {
+  text-align: center;
+}
+
+.back-home{
+  display:inline-block;
+  margin-bottom:20px;
+  color:#dd7412;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.back-home:hover{
+  text-decoration:underline;
+}
+.page-title{
+  text-align: center;
+  margin-bottom: 32px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+       /* контейнер со списком карточек */
+.events-scroll{
+  display: flex;
+  gap: 16px;              /* <-- расстояние между карточками (можешь 10-24) */
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 12px 8px 20px;
+  scroll-behavior: smooth;
+}
+
+/* фикс ширины каждой карточки (чтобы не растягивались и не разъезжались) */
+.event-col{
+  flex: 0 0 460px;        /* <-- ширина карточки. Можешь 420-520 */
+  display: flex;
+}
+
+.event-card{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 760px;             /* фикс высоты карточки */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  background: rgb(245, 214, 187);
+}
+
+.event-img{
+  width: 100%;
+  height: 420px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 16px;
+  display: block;
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  flex: 1;                   /* растянуть контент */
+  gap: 10px;
+  margin-top: 12px;
+  min-height: 0;
+}
+
+.event-card .desc{
+  margin: 0;
+  flex: 1;            /* занимает всё свободное место */
+  min-height: 0;      /* важно */
+  overflow-y: auto;   /* включает скролл */
+  padding-right: 6px; /* чтобы текст не прилипал к скроллу */
+}
+
+
+.btn-orange{
+  margin-top: auto;
+  display: block;
+  width: 100%;
+  text-align: center;
+  background-color: #ffb074;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 600;
+  transition: .3s;
+}
+
+.btn-orange:hover{ background-color: #ff8d3a; }
+
+.event-card h5{
+  /* твоя "рамочка" */
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+  /* главное: одинаковая высота у всех заголовков */
+  height: 72px;              /* можешь 64–80 подобрать */
+  box-sizing: border-box;
+  padding: 10px 12px;
+  margin: 8px 0 12px 0;
+
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.25;
+
+  /* центрируем текст внутри рамки */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  /* чтобы длинное не ломало верстку */
+  overflow: hidden;
+}
+
+.meta{
+  margin-top: 6px;
+  min-height: 72px;     /* фикс высоты блока с датой/местом/билетами */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-row{
+  display: grid;
+  grid-template-columns: 22px 1fr; /* 1-я колонка под иконку, 2-я под текст */
+  column-gap: 8px;
+  align-items: center;            /* ровняем по центру строки */
+}
+
+.meta-row .dt{
+  white-space: nowrap; /* дата+время всегда в одну строку */
+}
+.details-btn{
+  display: inline-block;
+  padding: 10px 18px;
+  background: #f56f31;      /* цвет кнопки */
+  color: #000000;              /* цвет текста */
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.details-btn:hover{
+  background: #ff7b00;      /* цвет при наведении */
+}
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container py-4">
+    <h1 class="text-center mb-4">Афиша концертов</h1>
+
+   {% if events %}
+  <div class="events-scroll">
+
+    {% for event in events %}
+  <div class="event-col">
+    <div class="event-card">
+
+      {% if event.image %}
+        <img src="{{ event.image.url }}" class="event-img" alt="{{ event.title }}">
+      {% endif %}
+
+ <div class="content">
+        <h5>{{ event.title }}</h5>
+
+        <div class="meta">
+  <div class="meta-row">📅 <span class="dt">{{ event.event_date }} в {{ event.event_time }}</span></div>
+  <div class="meta-row">📍 <span>{{ event.location }}</span></div>
+  <div class="meta-row">🎟️ <span>Билетов доступно: {{ event.available_tickets }}</span></div>
+</div>
+
+        {% if event.description %}
+          <p class="desc">{{ event.description }}</p>
+        {% endif %}
+      </div>
+
+    <a href="{% url 'event_detail' event.id %}" class="details-btn">Подробнее</a>
+</div>
+  </div>
+{% endfor %}
+
+  </div>
+{% else %}
+  <p class="text-center">Пока нет запланированных концертов 😊</p>
+{% endif %}
+
