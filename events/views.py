@@ -119,3 +119,5 @@ from django.shortcuts import render
 
 def home(request):
     return render(request, "events/home.html")
+def about_studio(request):
+    return render(request, 'events/about.html')
