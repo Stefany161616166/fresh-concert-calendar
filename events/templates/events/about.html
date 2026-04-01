@@ -4,81 +4,114 @@
 
 {% block extra_head %}
 <style>
-.about-page{
-    max-width: 1000px;
-    margin: 40px auto;
-    background: #ffd99f;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+.about-wrapper{
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 20px;
 }
 
+/* Заголовок */
 .about-title{
-    font-size: 38px;
-    font-weight: 800;
-    margin-bottom: 24px;
-    color: #111;
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 40px;
+    text-align: center;
 }
 
-.about-text{
-    font-size: 18px;
+/* Сетка */
+.about-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+/* Карточки */
+.about-card{
+    padding: 28px;
+    border-radius: 18px;
+    font-size: 17px;
     line-height: 1.7;
-    color: #333;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transition: .3s;
 }
 
-.about-text p{
-    margin-bottom: 18px;
+/* разные стили карточек */
+.card-1{
+    background: #ffd99f;
 }
 
-@media (max-width: 700px){
-    .about-page{
-        margin: 20px 14px;
-        padding: 24px 18px;
+.card-2{
+    background: #ffffff;
+}
+
+.card-3{
+    background: #ffe7c2;
+}
+
+.card-4{
+    background: #ffffff;
+}
+
+/* эффект наведения */
+.about-card:hover{
+    transform: translateY(-5px);
+}
+
+/* делаем "разброс" */
+.card-1{ transform: translateY(0px); }
+.card-2{ transform: translateY(40px); }
+.card-3{ transform: translateY(-20px); }
+.card-4{ transform: translateY(30px); }
+
+/* адаптив */
+@media (max-width: 800px){
+    .about-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .about-card{
+        transform: none !important;
     }
 
     .about-title{
-        font-size: 28px;
-    }
-
-    .about-text{
-        font-size: 16px;
+        font-size: 30px;
     }
 }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="about-page">
-    <div class="about-title">О студии</div>
+<div class="about-wrapper">
 
-    <div class="about-text">
-        <p>
+    <div class="about-title">О студии Fresh</div>
+
+    <div class="about-grid">
+
+        <div class="about-card card-1">
             Студия танца «Fresh» — это современное творческое пространство, в котором дети и взрослые
             могут развивать свои танцевальные способности, артистизм и уверенность в себе.
-        </p>
+        </div>
 
-        <p>
+        <div class="about-card card-2">
             Основная цель студии заключается не только в обучении танцевальным направлениям,
             но и в создании дружелюбной атмосферы, где каждый участник чувствует себя частью
             большой творческой команды.
-        </p>
+        </div>
 
-        <p>
+        <div class="about-card card-3">
             В студии проводятся занятия по современным танцевальным направлениям, хореографии,
             сценической подготовке и постановочной деятельности. Особое внимание уделяется
-            участию воспитанников в концертах, конкурсах и праздничных мероприятиях по всему городу Чебоксары.
+            участию воспитанников в концертах и конкурсах по всему городу Чебоксары. 
             Вы могли нас видеть на Красной площади, заливе, в различных театрах, ДК, сольных концертах звезд Чувашской эстрады и не только!
-        </p>
+        </div>
 
-        <p>
-            Студия танца «Fresh» регулярно организует концертные программы, на которых зрители
-            могут увидеть яркие постановки, тематические номера и выступления различных возрастных групп.
-        </p>
+        <div class="about-card card-4">
+            Студия «Fresh» регулярно организует концертные программы, где зрители могут увидеть
+            яркие постановки, тематические номера и выступления разных возрастных групп.
+            Здесь рождаются настоящие эмоции и сцена становится частью жизни.
+        </div>
 
-        <p>
-            Благодаря данному сайту Вы можете ознакомиться с актуальной афишей мероприятий,
-            получить информацию о концертных программах и забронировать билеты онлайн.
-        </p>
     </div>
+
 </div>
 {% endblock %}
