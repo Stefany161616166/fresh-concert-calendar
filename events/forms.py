@@ -7,7 +7,7 @@ class BookingForm(forms.ModelForm):
         model = Booking
         fields = ['name', 'email', 'phone']
         labels = {
-            'name': 'Ваше имя',
+            'name': 'Ваше ФИО',
             'email': 'Email',
             'phone': 'Телефон',
         }
