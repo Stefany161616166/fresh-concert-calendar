@@ -2,192 +2,263 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>{{ event.title }}</title>
+    <meta charset="UTF-8" />
+    <title>{{ event.title }}</title>
 
-  <style>
-    /* БАЗА */
-    * { box-sizing: border-box; }
-    body{
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-    }
+    <style>
+        /* БАЗА */
+        * { box-sizing: border-box; }
 
-    /* На всякий: любые картинки не ломают разметку */
-    img{ max-width: 100%; height: auto; display: block; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            color: #111;
+        }
 
-    .wrap{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 26px 16px 60px;
-    }
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 26px 16px 60px;
+        }
 
-    .back{
-      display: inline-block;
-      margin-bottom: 14px;
-      color: #dd7412;
-      text-decoration: none;
-      font-weight: 700;
-    }
-    .back:hover{ text-decoration: underline; }
+        .back {
+            display: inline-block;
+            margin-bottom: 14px;
+            color: #dd7412;
+            text-decoration: none;
+            font-weight: 700;
+        }
 
-    .card{
-      background: #fff;
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.08);
-    }
+        .back:hover {
+            text-decoration: underline;
+        }
 
-    h1{
-      margin: 0 0 14px;
-      font-size: 34px;
-      line-height: 1.15;
-    }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 25px rgba(0,0,0,.08);
+        }
 
-    .block{ margin-top: 16px; }
-    .label{ font-weight: 800; margin-bottom: 6px; }
-    .text{ margin: 0; }
+        h1 {
+            margin: 0 0 14px;
+            font-size: 34px;
+            line-height: 1.15;
+        }
 
-    /* СЕКЦИИ */
-    .section{ margin-top: 22px; }
-    .section-title{
-      font-weight: 900;
-      font-size: 20px;
-      margin-bottom: 12px;
-    }
+        h2 {
+            margin: 0 0 14px;
+            font-size: 20px;
+            line-height: 1.2;
+        }
 
-    /* КАРТОЧКИ "КТО ВЫСТУПАЕТ" */
-    .who-grid{
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
+        .block {
+            margin-top: 16px;
+        }
 
-    .who-card{
-      background: #fafafa;
-      border: 1px solid #eee;
-      border-radius: 16px;
-      overflow: hidden; /* КЛЮЧЕВО: ничего не вылезет */
-      box-shadow: 0 6px 14px rgba(0,0,0,.06);
-      transition: transform .15s ease, box-shadow .15s ease;
-    }
-    .who-card:hover{
-      transform: translateY(-3px);
-      box-shadow: 0 10px 22px rgba(0,0,0,.10);
-    }
+        .label {
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
 
-    /* КЛЮЧЕВО: фиксируем высоту и ширину картинки в карточке */
-    .who-card img{
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-    }
+        .text {
+            margin: 0;
+            line-height: 1.6;
+        }
 
-    .who-body{ padding: 12px 12px 14px; }
-    .who-title{
-      font-weight: 900;
-      font-size: 15px;
-      color: #111;
-    }
-    .who-sub{
-      margin-top: 4px;
-      font-size: 13px;
-      color: #666;
-    }
+        /* СЕКЦИИ */
+        .section {
+            margin-top: 22px;
+        }
 
-    /* ПРОГРАММА */
-    .program ul{
-      margin: 10px 0 0 18px;
-    }
+        .section-title {
+            font-weight: 900;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
 
-    /* КНОПКА */
-    .btn{
-      display: inline-block;
-      margin-top: 18px;
-      padding: 12px 18px;
-      background: #333;
-      color: #fff;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 800;
-    }
-    .btn:hover{ background: #000; }
+        /* КАРТОЧКИ "КТО ВЫСТУПАЕТ" */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
 
-    /* АДАПТИВ */
-    @media (max-width: 980px){
-      .who-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      h1{ font-size: 30px; }
-    }
-    @media (max-width: 650px){
-      .who-grid{ grid-template-columns: 1fr; }
-      .card{ padding: 18px; }
-      h1{ font-size: 26px; }
-    }
-  </style>
+        .who-card {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 14px rgba(0,0,0,.06);
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+
+        .who-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(0,0,0,.10);
+        }
+
+        /* Главное исправление для картинок */
+        .who-card img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #f2f2f2;
+        }
+
+        .who-body {
+            padding: 14px 14px 16px;
+        }
+
+        .who-title {
+            font-weight: 900;
+            font-size: 20px;
+            color: #111;
+            line-height: 1.25;
+            margin-bottom: 8px;
+        }
+
+        .who-sub {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        /* ПРОГРАММА */
+        .program ul {
+            margin: 10px 0 18px 22px;
+            padding: 0;
+            line-height: 1.7;
+        }
+
+        .program li {
+            margin-bottom: 4px;
+        }
+
+        /* КНОПКА */
+        .btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 12px 18px;
+            background: #333;
+            color: #fff;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        .btn:hover {
+            background: #000;
+        }
+
+        /* АДАПТИВ */
+        @media (max-width: 980px) {
+            .who-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .who-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .who-card img {
+                height: 220px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="wrap">
-    <a class="back" href="{% url 'event_list' %}">← Назад к афише</a>
+    <div class="wrap">
+        <a class="back" href="{% url 'event_list' %}">← Назад к афише</a>
 
-    <div class="card">
-      <h1>{{ event.title }}</h1>
+        <div class="card">
+            <h1>{{ event.title }}</h1>
 
-      <div class="block">
-        <div class="label">Описание:</div>
-        <p class="text">{{ event.description }}</p>
-      </div>
+            <div class="block">
+                <div class="label">Описание:</div>
+                <p class="text">{{ event.description }}</p>
+            </div>
 
-           <h2>Кто выступает</h2>
+            <div class="section">
+                <div class="section-title">Кто выступает</div>
 
-<div class="who-container">
+                <div class="who-grid">
+                    {% if event.performer_1_title %}
+                    <div class="who-card">
+                        {% if event.performer_1_image %}
+                            <img src="{{ event.performer_1_image.url }}" alt="{{ event.performer_1_title }}">
+                        {% else %}
+                            <img src="{% static 'images/detail/default-person.jpg' %}" alt="{{ event.performer_1_title }}">
+                        {% endif %}
+                        <div class="who-body">
+                            <div class="who-title">{{ event.performer_1_title }}</div>
+                            <div class="who-sub">{{ event.performer_1_desc }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
 
-    {% if event.performer_1_title %}
-    <div class="who-card">
-        <img src="{{ event.performer_1_image.url }}">
-        <div class="who-body">
-            <div class="who-title">{{ event.performer_1_title }}</div>
-            <div class="who-sub">{{ event.performer_1_desc }}</div>
+                    {% if event.performer_2_title %}
+                    <div class="who-card">
+                        {% if event.performer_2_image %}
+                            <img src="{{ event.performer_2_image.url }}" alt="{{ event.performer_2_title }}">
+                        {% else %}
+                            <img src="{% static 'images/detail/default-person.jpg' %}" alt="{{ event.performer_2_title }}">
+                        {% endif %}
+                        <div class="who-body">
+                            <div class="who-title">{{ event.performer_2_title }}</div>
+                            <div class="who-sub">{{ event.performer_2_desc }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if event.guest_title %}
+                    <div class="who-card">
+                        {% if event.guest_image %}
+                            <img src="{{ event.guest_image.url }}" alt="{{ event.guest_title }}">
+                        {% else %}
+                            <img src="{% static 'images/detail/default-person.jpg' %}" alt="{{ event.guest_title }}">
+                        {% endif %}
+                        <div class="who-body">
+                            <div class="who-title">{{ event.guest_title }}</div>
+                            <div class="who-sub">{{ event.guest_desc }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="section program">
+                <div class="section-title">Концертная программа</div>
+
+                <ul>
+                    {% for line in event.program.splitlines %}
+                        {% if line %}
+                            <li>{{ line }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <a class="btn" href="{% url 'book_step_1' event.id %}">Забронировать билет</a>
         </div>
     </div>
-    {% endif %}
-
-    {% if event.performer_2_title %}
-    <div class="who-card">
-        <img src="{{ event.performer_2_image.url }}">
-        <div class="who-body">
-            <div class="who-title">{{ event.performer_2_title }}</div>
-            <div class="who-sub">{{ event.performer_2_desc }}</div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if event.guest_title %}
-    <div class="who-card">
-        <img src="{{ event.guest_image.url }}">
-        <div class="who-body">
-            <div class="who-title">{{ event.guest_title }}</div>
-            <div class="who-sub">{{ event.guest_desc }}</div>
-        </div>
-    </div>
-    {% endif %}
-
-</div>
-
-      <div class="section program">
-    <div class="section-title">Концертная программа</div>
-
-    <ul>
-        {% for line in event.program.splitlines %}
-            <li>{{ line }}</li>
-        {% endfor %}
-    </ul>
-</div>
-
-      <a class="btn" href="{% url 'book_step_1' event.id %}">Забронировать билет</a>
-    </div>
-  </div>
 </body>
 </html>
