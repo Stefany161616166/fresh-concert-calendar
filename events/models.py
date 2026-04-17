@@ -10,6 +10,20 @@ class Event(models.Model):
     available_tickets = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='event_images/', null=True, blank=True)
 
+    performer_1_title = models.CharField('Название первого блока участников', max_length=200, blank=True)
+    performer_1_desc = models.TextField('Описание первого блока участников', blank=True)
+    performer_1_image = models.ImageField('Фото первого блока участников', upload_to='performers/', null=True, blank=True)
+
+    performer_2_title = models.CharField('Название второго блока участников', max_length=200, blank=True)
+    performer_2_desc = models.TextField('Описание второго блока участников', blank=True)
+    performer_2_image = models.ImageField('Фото второго блока участников', upload_to='performers/', null=True, blank=True)
+
+    guest_title = models.CharField('Название блока гостя', max_length=200, blank=True)
+    guest_desc = models.TextField('Описание гостя программы', blank=True)
+    guest_image = models.ImageField('Фото гостя программы', upload_to='guests/', null=True, blank=True)
+
+    program = models.TextField('Концертная программа', blank=True)
+
     def __str__(self):
         return self.title
 
