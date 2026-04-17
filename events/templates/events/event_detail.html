@@ -140,48 +140,51 @@
         <p class="text">{{ event.description }}</p>
       </div>
 
-      <div class="section">
-        <div class="section-title">Кто выступает</div>
+           <h2>Кто выступает</h2>
 
-        <div class="who-grid">
-          <div class="who-card">
-            <img src="{% static 'images/detail/maria.jpg' %}" alt="Воспитанники Марии Тепеевой">
-            <div class="who-body">
-              <div class="who-title">Воспитанники Марии Тепеевой</div>
-              <div class="who-sub">•Современная хореография •Women dance •Фитнес •Hip-Hop</div>
-            </div>
-          </div>
+<div class="who-container">
 
-          <div class="who-card">
-            <img src="{% static 'images/detail/svetlana.jpg' %}" alt="Воспитанники Светланы">
-            <div class="who-body">
-              <div class="who-title">Воспитанники Светланы Григорьевой</div>
-              <div class="who-sub">•Street • Hip-Hop •Группы от 3-х лет</div>
-            </div>
-          </div>
-
-          <div class="who-card">
-            <img src="{% static 'images/detail/guests.jpg' %}" alt="Гости программы">
-            <div class="who-body">
-              <div class="who-title">Гости программы</div>
-              <div class="who-sub">Эксклюзивный номер-звезда Чувашской эстрады</div>
-            </div>
-          </div>
+    {% if event.performer_1_title %}
+    <div class="who-card">
+        <img src="{{ event.performer_1_image.url }}">
+        <div class="who-body">
+            <div class="who-title">{{ event.performer_1_title }}</div>
+            <div class="who-sub">{{ event.performer_1_desc }}</div>
         </div>
-      </div>
+    </div>
+    {% endif %}
+
+    {% if event.performer_2_title %}
+    <div class="who-card">
+        <img src="{{ event.performer_2_image.url }}">
+        <div class="who-body">
+            <div class="who-title">{{ event.performer_2_title }}</div>
+            <div class="who-sub">{{ event.performer_2_desc }}</div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if event.guest_title %}
+    <div class="who-card">
+        <img src="{{ event.guest_image.url }}">
+        <div class="who-body">
+            <div class="who-title">{{ event.guest_title }}</div>
+            <div class="who-sub">{{ event.guest_desc }}</div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
 
       <div class="section program">
-        <div class="section-title">Концертная программа</div>
-        <ul>
-          <li>Открывашка</li>
-          <li>Блок 1</li>
-          <li>1. Фонарики</li>
-          <li>2. Women</li>
-          <li>Блок 2</li>
-          <li>3. Чебурашки</li>
-          <li>Финал</li>
-        </ul>
-      </div>
+    <div class="section-title">Концертная программа</div>
+
+    <ul>
+        {% for line in event.program.splitlines %}
+            <li>{{ line }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
       <a class="btn" href="{% url 'book_step_1' event.id %}">Забронировать билет</a>
     </div>
