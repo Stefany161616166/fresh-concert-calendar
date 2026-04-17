@@ -113,11 +113,10 @@ def booking_step_2(request, event_id, booking_id):
     return render(request, "events/seat_map.html", context)
 
 def booking_success(request):
-    return render(request, "events/success.html")
-
-from django.shortcuts import render
+    return render(request, 'events/success.html')
 
 def home(request):
-    return render(request, "events/home.html")
+    return render(request, 'events/home.html')
+
 def about_studio(request):
     return render(request, 'events/about.html')
