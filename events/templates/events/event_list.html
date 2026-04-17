@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -53,36 +54,40 @@
 }
 
 .event-card{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    background: rgb(245, 214, 187);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 760px;             /* фикс высоты карточки */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  background: rgb(245, 214, 187);
 }
 
 .event-img{
-    width: 100%;
-    height: 340px;
-    object-fit: cover;
-    border-radius: 16px;
-    display: block;
+  width: 100%;
+  height: 420px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 16px;
+  display: block;
 }
 
 .content{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 10px;
-    margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;                   /* растянуть контент */
+  gap: 10px;
+  margin-top: 12px;
+  min-height: 0;
 }
 
 .event-card .desc{
-    margin: 0;
-    flex: 1;
-    overflow-y: auto;
-    max-height: 120px;
+  margin: 0;
+  flex: 1;            /* занимает всё свободное место */
+  min-height: 0;      /* важно */
+  overflow-y: auto;   /* включает скролл */
+  padding-right: 6px; /* чтобы текст не прилипал к скроллу */
 }
 
 
@@ -179,16 +184,10 @@
   <div class="event-col">
     <div class="event-card">
 
-     {% load static %}
-
-{% if event.title == 'Открытие танцевального сезона студии танца "Fresh"' %}
-    <img class="event-img" src="{% static 'images/events/FRESH_2026-01-05_19-43-49.jpg' %}" alt="{{ event.title }}">
-{% elif event.title == 'Концерт FRESH + Константин Рязанов' %}
-    <img class="event-img" src="{% static 'images/events/ФрешIMG_0317.JPG' %}" alt="{{ event.title }}">
-{% elif event.title == 'Концерт "В России с любовью"' %}
-    <img class="event-img" src="{% static 'images/events/Fresh.jpg' %}" alt="{{ event.title }}">
+{% if event.image %}
+    <img class="event-img" src="{{ event.image.url }}" alt="{{ event.title }}">
 {% else %}
-    <img class="event-img" src="{% static 'images/logo.png' %}" alt="Нет афиши">
+    <img class="event-img" src="{% static 'images/events/Fresh.jpg' %}" alt="Афиша">
 {% endif %}
 
  <div class="content">
