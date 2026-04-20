@@ -42,9 +42,7 @@ class EventAdmin(admin.ModelAdmin):
             )
         }),
         ('Программа концерта', {
-            'fields': (
-                'program',
-            )
+            'fields': ('program',)
         }),
     )
 
@@ -60,9 +58,14 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone', 'email', 'event', 'seat', 'created_at')
+    list_display = ('name', 'phone', 'email', 'event', 'seats_list', 'created_at')
     list_filter = ('event', 'created_at')
     search_fields = ('name', 'phone', 'email')
+
+    def seats_list(self, obj):
+        seats = obj.seats.all().order_by('zone', 'row', 'number')
+        return ", ".join(str(seat) for seat in seats) if seats.exists() else "-"
+    seats_list.short_description = 'Места'
 
 
 @admin.register(Seat)
