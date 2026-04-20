@@ -48,49 +48,41 @@ def booking_step_2(request, event_id, booking_id):
     event = get_object_or_404(Event, id=event_id)
     booking = get_object_or_404(Booking, id=booking_id, event=event)
 
-    error = None  # <-- чтобы переменная всегда существовала
+    error = None
 
     if request.method == "POST":
-        seat_ids = request.POST.getlist("seats")  # getlist, а не get
+        seat_ids = request.POST.getlist("seats")
 
         if not seat_ids:
             error = "Выберите хотя бы одно место."
         else:
-            seats = Seat.objects.filter(event=event, id__in=seat_ids, booked=False)
+            seats = list(
+                Seat.objects.filter(
+                    event=event,
+                    id__in=seat_ids,
+                    booked=False
+                ).order_by("zone", "row", "number")
+            )
 
-            if seats.count() != len(seat_ids):
+            if len(seats) != len(seat_ids):
                 error = "Одно или несколько мест уже заняты. Обновите страницу и выберите другие."
             else:
-                seats.update(booked=True)
+                cnt = len(seats)
 
-                cnt = len(seat_ids)
-                if event.available_tickets >= cnt:
+                if event.available_tickets < cnt:
+                    error = "Недостаточно доступных билетов для выбранного количества мест."
+                else:
+                    for seat in seats:
+                        seat.booked = True
+                        seat.save()
+
+                    booking.seats.set(seats)
+                    booking.save()
+
                     event.available_tickets -= cnt
                     event.save()
 
-                return redirect("booking_success")
-
-    ROWS_COUNT = 18
-    left_by_row = _build_zone(event, "loge_left", ROWS_COUNT, order_desc=True)
-    right_by_row = _build_zone(event, "loge_right", ROWS_COUNT, order_desc=False)
-
-    rows = []
-    for i in range(1, ROWS_COUNT + 1):
-        rows.append({
-            "num": i,
-            "left": left_by_row.get(i, []),
-            "right": right_by_row.get(i, []),
-        })
-
-    context = {
-        "event": event,
-        "booking": booking,
-        "rows": rows,
-        "error": error,
-    }
-    return render(request, "events/seat_map.html", context)
-
-    
+                    return redirect("booking_success")
 
     ROWS_COUNT = 18
     left_by_row = _build_zone(event, "loge_left", ROWS_COUNT, order_desc=True)
