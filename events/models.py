@@ -52,13 +52,8 @@ class Seat(models.Model):
 
 class Booking(models.Model):
     event = models.ForeignKey(Event, related_name='bookings', on_delete=models.CASCADE)
-    seat = models.OneToOneField(
-        Seat,
-        related_name='booking',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL
-    )
+    seats = models.ManyToManyField(Seat, related_name='bookings', blank=True)
+
     name = models.CharField('Имя', max_length=100)
     email = models.EmailField('Email')
     phone = models.CharField('Телефон', max_length=30)
